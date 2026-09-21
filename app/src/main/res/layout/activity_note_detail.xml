@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/Dark"
+    android:padding="16dp"
+
+    >
+
+
+    <ImageView
+        android:id="@+id/btnBack"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="16dp"
+        android:src="@android:drawable/ic_menu_revert"
+        android:contentDescription="@string/goBack"
+        app:tint="@color/white" />
+
+    <EditText
+        android:id="@+id/editTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="@string/title"
+        android:background="@android:color/transparent"
+        android:hint="@string/title"
+        android:inputType=""
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:paddingBottom="16dp"
+        />
+
+    <Button
+        android:id="@+id/btnPickDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/noReminders"
+        android:backgroundTint="#444444"
+        android:textColor="@color/white"
+        android:layout_marginEnd="12dp"
+        android:drawableLeft="@android:drawable/ic_menu_my_calendar" />
+
+    <!-- Campo para o Endereço -->
+    <EditText
+        android:id="@+id/editAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:background="@android:color/transparent"
+        android:hint="@string/addAddress"
+        android:inputType=""
+        android:textColorHint="#888888"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/editContent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:autofillHints=""
+        android:background="@android:color/transparent"
+        android:gravity="top|start"
+        android:hint="@string/InputText"
+        android:inputType=""
+        android:textColorHint="#888888"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        />
+
+
+</LinearLayout>

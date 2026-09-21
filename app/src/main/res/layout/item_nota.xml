@@ -2,10 +2,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="16sp"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:background="@color/DarkCard"
     android:padding="16dp">
 
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical" >
     <TextView
         android:textColor="@color/white"
         android:id="@+id/textTitle"
@@ -33,7 +38,23 @@
         android:text="Um preview do conteudo..."
         android:maxLines="1"
         android:ellipsize="end"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        />
+    </LinearLayout>
 
+
+    <TextView
+        android:id="@+id/textAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:maxWidth="100dp"
+        android:maxLines="3"
+        android:ellipsize="end"
+        android:text="Rua Teste, 123"
+        android:textColor="@color/teal_200"
+        android:textSize="12sp"
+        android:textAlignment="textEnd"
+        />
 
 </LinearLayout>

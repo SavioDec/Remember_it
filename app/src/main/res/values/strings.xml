@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">NotasApp</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="title">Title</string>
+    <string name="InputText">Start tipping...</string>
+    <string name="goBack">go back</string>
+    <string name="addAddress">Add Address</string>
+    <string name="noReminders">No reminders</string>
 </resources>

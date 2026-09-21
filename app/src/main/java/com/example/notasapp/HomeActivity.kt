@@ -18,22 +18,27 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.notasapp.databinding.HomeListNotesBinding
 import com.example.notasapp.ui.theme.NotasAppTheme
 
-
-private val homeList = List(3){
-    if (it == 0){
-        return@List HomeListNota(
-            it.toString(),
-            "Minha Primeira Nota",
-            "um conteudo qualquer",
-            "20/09/2026"
-        )
-    }
-    HomeListNota(it.toString(), "Title $it", "Seila, Qualquer coisa", "20/09/2026")
-}
-
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: HomeListNotesBinding
+
+    // cria o "Lançador" que sabe esperar um resultado
+    private val addNoteLauncher = registerForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+
+        // Esse bloco só roda quando voltamos da Tela 2. Verificamos se foi SUCESSO (RESULT_OK)
+        if (result.resultCode == RESULT_OK) {
+            // Como sabemos que a nota foi pro topo (posição 0), avisamos o adapter:
+            binding.recyclerViewNotas.adapter?.notifyItemInserted(0)
+
+            // Forçamos a lista a rolar pro topo para o usuário ver a nota nova
+            binding.recyclerViewNotas.scrollToPosition(0)
+
+        }
+
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,14 +57,27 @@ class HomeActivity : AppCompatActivity() {
             insets
         }
 
-        // 1. instância do Adapter passando os Mock Datas
-        val adapter = NotasAdapter(homeList)
-        // 2. avisa ao RecyclerView quem é o Adapter dele
+        // instância do Adapter passando os Mock Datas
+        val adapter = NotasAdapter(MockData.listaNotas)
+        // avisa ao RecyclerView quem é o Adapter dele
         binding.recyclerViewNotas.adapter = adapter
-        // 3. fala como a lista deve se comportar (Vertical padrão)
-        binding.recyclerViewNotas.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
+        // fala como a lista deve se comportar (Vertical padrão)
+        binding.recyclerViewNotas.layoutManager =
+            androidx.recyclerview.widget.LinearLayoutManager(this)
 
 
+        binding.bttAddNote.setOnClickListener {
+
+            val intent = android.content.Intent(this, NoteDetailActivity::class.java)
+
+            addNoteLauncher.launch(intent)
+
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.recyclerViewNotas.adapter?.notifyDataSetChanged()
     }
 
 
@@ -70,5 +88,6 @@ data class HomeListNota(
     val id: String,
     val title: String,
     val preview: String,
-    val date: String
+    val date: String,
+    val address: String
 )
