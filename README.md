@@ -57,6 +57,6 @@ Para facilitar a correção e avaliação, abaixo estão mapeados os requisitos 
 ### Itens Opcionais Atendidos:
  **Utilizar apenas ViewBinding ao invés de findViewById:** Todo o código do projeto é livre de `findViewById`. A comunicação com a UI é 100% feita via instâncias de Binding (`ActivityNoteDetailBinding`, `HomeListNotesBinding` e `ItemNotaBinding`).
 
-### Funcionalidade Extra (Destaque Técnico):
+### Funcionalidade Extra:
 * **Swipe-to-Delete interativo:** O aplicativo intercepta gestos na `RecyclerView` (usando `ItemTouchHelper` e a classe `Canvas`). Ao arrastar um card, sua transparência (alpha) é alterada e um background desenhado com a lixeira é revelado antes do item ser deletado do Mock.
 * **Intent Implícita (Maps):** Um clique longo no endereço da nota intercepta o roteamento padrão do Android abrindo o Maps.
