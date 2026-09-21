@@ -1,5 +1,6 @@
 package com.example.notasapp
 
+import android.graphics.Canvas
 import android.os.Bundle
 import android.util.Log.v
 import androidx.activity.ComponentActivity
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.example.notasapp.databinding.HomeListNotesBinding
 import com.example.notasapp.ui.theme.NotasAppTheme
 
@@ -73,6 +75,77 @@ class HomeActivity : AppCompatActivity() {
             addNoteLauncher.launch(intent)
 
         }
+
+
+        val regraDeArrasto = object : androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback (
+            0, // nao permite arrastar para cima/baixo
+            androidx.recyclerview.widget.ItemTouchHelper.LEFT //permite arrastar apenas para a esquerda
+        ){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val posicao = viewHolder.adapterPosition
+
+                MockData.listaNotas.removeAt(posicao)
+
+                adapter.notifyItemRemoved(posicao)
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                val itemView = viewHolder.itemView
+                val itemHeight = itemView.bottom - itemView.top
+
+                val alpha = 1.0f - Math.abs(dX) / itemView.width.toFloat()
+                itemView.alpha = alpha
+
+                val paint = android.graphics.Paint()
+                paint.color = android.graphics.Color.parseColor("#FF4444")
+
+                itemView.right.toFloat() + dX
+                val background = android.graphics.RectF(
+                    itemView.right.toFloat() + dX, // A borda esquerda do fundo acompanha o card
+                    itemView.top.toFloat(),
+                    itemView.right.toFloat(),
+                    itemView.bottom.toFloat()
+                )
+                c.drawRect(background, paint)
+                val icone = androidx.core.content.ContextCompat.getDrawable(this@HomeActivity, android.R.drawable.ic_menu_delete)
+                if (icone != null){
+                    val iconMargin = (itemHeight - icone.intrinsicHeight) / 2
+                    val iconTop = itemView.top + iconMargin
+                    val iconBottom = iconTop + icone.intrinsicHeight
+                    val iconLeft = itemView.right - iconMargin - icone.intrinsicWidth
+                    val iconRight = itemView.right - iconMargin
+
+                    // Só desenha o ícone se o usuário arrastou o suficiente para ele aparecer
+                    if (Math.abs(dX) > iconMargin) {
+                        icone.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                        icone.draw(c)
+                    }
+                }
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            }
+
+        }
+
+        val itemTouchHelper = androidx.recyclerview.widget.ItemTouchHelper(regraDeArrasto)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerViewNotas)
+
     }
 
     override fun onResume() {
