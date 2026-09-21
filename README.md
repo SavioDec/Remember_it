@@ -55,7 +55,7 @@ Para facilitar a correção e avaliação, abaixo estão mapeados os requisitos 
    * A persistência em tempo de execução foi arquitetada usando o padrão Singleton através do arquivo `MockData.kt`. Ele contém uma `MutableList` de anotações que simula o comportamento de um banco de dados real.
 
 ### Itens Opcionais Atendidos:
-* ✅ **Utilizar apenas ViewBinding ao invés de findViewById:** Todo o código do projeto é livre de `findViewById`. A comunicação com a UI é 100% feita via instâncias de Binding (`ActivityNoteDetailBinding`, `HomeListNotesBinding` e `ItemNotaBinding`).
+ **Utilizar apenas ViewBinding ao invés de findViewById:** Todo o código do projeto é livre de `findViewById`. A comunicação com a UI é 100% feita via instâncias de Binding (`ActivityNoteDetailBinding`, `HomeListNotesBinding` e `ItemNotaBinding`).
 
 ### Funcionalidade Extra (Destaque Técnico):
 * **Swipe-to-Delete interativo:** O aplicativo intercepta gestos na `RecyclerView` (usando `ItemTouchHelper` e a classe `Canvas`). Ao arrastar um card, sua transparência (alpha) é alterada e um background desenhado com a lixeira é revelado antes do item ser deletado do Mock.
