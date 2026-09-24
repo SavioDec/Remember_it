@@ -28,27 +28,31 @@ class NoteDetailActivity : AppCompatActivity() {
 
 
         var dataSelecionada = ""
-        val tituloRecebido = intent.getStringExtra("EXTRA_TITULO")
-        val ConteudoRecebido = intent.getStringExtra("EXTRA_CONTEUDO")
-        val dataRecebida = intent.getStringExtra("EXTRA_DATA")
-        val enderecoRecebido = intent.getStringExtra("EXTRA_ENDERECO")
+        val id = intent.getStringExtra("EXTRA_NOTA_ID")
+        val note = MockData.listaNotas.find { it.id == id }
 
-        if (tituloRecebido != null) {
-            binding.editTitle.setText(tituloRecebido)
-            binding.editContent.setText(ConteudoRecebido)
-            binding.editAddress.setText(enderecoRecebido)
+        if (note != null) {
+
+            binding.editTitle.setText(note.title)
+            binding.editContent.setText(note.preview)
+            binding.editAddress.setText(note.address)
 
             // Se tinha uma data salva, atualizamos o texto do botão e a nossa variável
-            if (dataRecebida != null && dataRecebida != "") {
-                binding.btnPickDate.text = dataRecebida
-                dataSelecionada = dataRecebida // Mantém a memória da data para o botão de salvar
+            if (note.date?.isNotEmpty() == true) {
+                binding.btnPickDate.text = note.date
+                dataSelecionada = note.date // Mantém a memória da data para o botão de salvar
             }
         }
 
         binding.btnBack.setOnClickListener {
 
+            if (binding.editTitle.text.isEmpty()){
+                finish()
+                return@setOnClickListener
+            }
+
             // Verifica se é uma nota nova (se abriu pelo '+')
-            if (tituloRecebido == null) {
+            if (note == null) {
                 val novoTitulo = binding.editTitle.text.toString()
                 val novoConteudo = binding.editContent.text.toString()
 
@@ -57,12 +61,25 @@ class NoteDetailActivity : AppCompatActivity() {
                     val notaNova = HomeListNota(
                         id = System.currentTimeMillis().toString(),
                         title = novoTitulo,
-                        preview = novoConteudo,
-                        date = dataSelecionada.ifEmpty { "Sem lembrete" }, // Usa a data do calendário!
-                        address = binding.editAddress.text.toString()      // Pega o endereço da tela!
+                        preview = novoConteudo.ifEmpty { null },
+                        date = dataSelecionada.ifEmpty { null }, // Usa a data do calendário!
+                        address = binding.editAddress.text.toString().ifEmpty { null }     // Pega o endereço da tela!
                     )
                     MockData.listaNotas.add(0, notaNova)
                     setResult(RESULT_OK) // Manda a Home atualizar
+                }
+            }else {
+                val index = MockData.listaNotas.indexOfFirst { it.id == note.id }
+                if (index != -1) {
+                    val novoTitulo = binding.editTitle.text.toString()
+                    val novoConteudo = binding.editContent.text.toString()
+
+                    MockData.listaNotas[index] = MockData.listaNotas[index].copy(
+                        title = novoTitulo,
+                        preview = novoConteudo.ifEmpty { null },
+                        date = binding.btnPickDate.text.toString().ifEmpty { null },
+                        address = binding.editAddress.text.toString().ifEmpty { null }
+                    )
                 }
             }
             finish()
@@ -103,5 +120,8 @@ class NoteDetailActivity : AppCompatActivity() {
             true // Retorna true para avisar que o clique longo foi consumido
         }
 
+
     }
+
+
 }

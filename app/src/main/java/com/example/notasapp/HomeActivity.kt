@@ -160,7 +160,7 @@ class HomeActivity : AppCompatActivity() {
 data class HomeListNota(
     val id: String,
     val title: String,
-    val preview: String,
-    val date: String,
-    val address: String
+    val preview: String?,
+    val date: String?,
+    val address: String?
 )

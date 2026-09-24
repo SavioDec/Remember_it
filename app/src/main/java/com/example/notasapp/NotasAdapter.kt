@@ -28,7 +28,7 @@ class NotasAdapter(private val notas: List<HomeListNota>): RecyclerView.Adapter<
         holder.binding.textAddress.text = notaAtual.address
 
         holder.binding.textAddress.setOnLongClickListener {
-            if (notaAtual.address.isNotEmpty()) {
+            if (notaAtual.address?.isNotEmpty() ?: false ) {
                 val uri = "geo:0,0?q=${android.net.Uri.encode(notaAtual.address)}".toUri()
                 val mapIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, uri)
 
@@ -46,10 +46,9 @@ class NotasAdapter(private val notas: List<HomeListNota>): RecyclerView.Adapter<
             val contexto = holder.binding.root.context
             val intent = android.content.Intent(contexto, NoteDetailActivity::class.java)
 
-            intent.putExtra("EXTRA_TITULO", notaAtual.title)
-            intent.putExtra("EXTRA_CONTEUDO", notaAtual.preview)
-            intent.putExtra("EXTRA_DATA", notaAtual.date)
-            intent.putExtra("EXTRA_ENDERECO", notaAtual.address)
+
+            intent.putExtra("EXTRA_NOTA_ID", notaAtual.id)
+
 
             contexto.startActivity(intent)
 
